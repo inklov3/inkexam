@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.TeachPlanViewMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.TeachPlanView">
+            <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
+            <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+            <result property="clazzName" column="clazz_name" jdbcType="VARCHAR"/>
+            <result property="term" column="term" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        teacher_name,course_name,clazz_name,
+        term
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from teach_plan_view
+        where 
+    </select>
+    <select id="getTeachCoursesNameByTeacherName" resultType="java.lang.String">
+        SELECT course_name
+        FROM teach_plan_view
+        WHERE teacher_name = #{teacher_name};
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from teach_plan_view
+        where 
+    </delete>
+    <insert id="insert">
+        insert into teach_plan_view
+        ( teacher_name,course_name,clazz_name
+        ,term)
+        values (#{teacherName,jdbcType=VARCHAR},#{courseName,jdbcType=VARCHAR},#{clazzName,jdbcType=VARCHAR}
+        ,#{term,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective">
+        insert into teach_plan_view
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="teacherName != null">teacher_name,</if>
+                <if test="courseName != null">course_name,</if>
+                <if test="clazzName != null">clazz_name,</if>
+                <if test="term != null">term,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="teacherName != null">#{teacherName,jdbcType=VARCHAR},</if>
+                <if test="courseName != null">#{courseName,jdbcType=VARCHAR},</if>
+                <if test="clazzName != null">#{clazzName,jdbcType=VARCHAR},</if>
+                <if test="term != null">#{term,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.TeachPlanView">
+        update teach_plan_view
+        <set>
+                <if test="teacherName != null">
+                    teacher_name = #{teacherName,jdbcType=VARCHAR},
+                </if>
+                <if test="courseName != null">
+                    course_name = #{courseName,jdbcType=VARCHAR},
+                </if>
+                <if test="clazzName != null">
+                    clazz_name = #{clazzName,jdbcType=VARCHAR},
+                </if>
+                <if test="term != null">
+                    term = #{term,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where  
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.TeachPlanView">
+        update teach_plan_view
+        set 
+            teacher_name =  #{teacherName,jdbcType=VARCHAR},
+            course_name =  #{courseName,jdbcType=VARCHAR},
+            clazz_name =  #{clazzName,jdbcType=VARCHAR},
+            term =  #{term,jdbcType=VARCHAR}
+        where  
+    </update>
+</mapper>

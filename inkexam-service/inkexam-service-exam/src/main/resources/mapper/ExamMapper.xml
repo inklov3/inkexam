@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.ExamMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Exam">
+            <id property="examId" column="exam_id" jdbcType="INTEGER"/>
+            <result property="usePaper" column="use_paper" jdbcType="INTEGER"/>
+            <result property="examTime" column="exam_time" jdbcType="TIMESTAMP"/>
+            <result property="examCourse" column="exam_course" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        exam_id,use_paper,exam_time,
+        exam_course
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from exam
+        where  exam_id = #{examId,jdbcType=INTEGER} 
+    </select>
+    <select id="selectAll" resultType="top.inklov3.service.exam.domain.po.Exam">
+        SELECT *
+        FROM exam;
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from exam
+        where  exam_id = #{examId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="exam_id" keyProperty="examId" parameterType="top.inklov3.service.exam.domain.po.Exam" useGeneratedKeys="true">
+        insert into exam
+        ( exam_id,use_paper,exam_time
+        ,exam_course)
+        values (#{examId,jdbcType=INTEGER},#{usePaper,jdbcType=INTEGER},#{examTime,jdbcType=TIMESTAMP}
+        ,#{examCourse,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="exam_id" keyProperty="examId" parameterType="top.inklov3.service.exam.domain.po.Exam" useGeneratedKeys="true">
+        insert into exam
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="examId != null">exam_id,</if>
+                <if test="usePaper != null">use_paper,</if>
+                <if test="examTime != null">exam_time,</if>
+                <if test="examCourse != null">exam_course,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="examId != null">#{examId,jdbcType=INTEGER},</if>
+                <if test="usePaper != null">#{usePaper,jdbcType=INTEGER},</if>
+                <if test="examTime != null">#{examTime,jdbcType=TIMESTAMP},</if>
+                <if test="examCourse != null">#{examCourse,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <insert id="insertWithPaperId">
+        INSERT INTO exam (use_paper, exam_time, exam_course) VALUE (#{paper_id}, #{exam.examTime}, #{exam.examCourse});
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Exam">
+        update exam
+        <set>
+                <if test="usePaper != null">
+                    use_paper = #{usePaper,jdbcType=INTEGER},
+                </if>
+                <if test="examTime != null">
+                    exam_time = #{examTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="examCourse != null">
+                    exam_course = #{examCourse,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   exam_id = #{examId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Exam">
+        update exam
+        set 
+            use_paper =  #{usePaper,jdbcType=INTEGER},
+            exam_time =  #{examTime,jdbcType=TIMESTAMP},
+            exam_course =  #{examCourse,jdbcType=VARCHAR}
+        where   exam_id = #{examId,jdbcType=INTEGER} 
+    </update>
+</mapper>

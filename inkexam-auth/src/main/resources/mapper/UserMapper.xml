@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.auth.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.auth.domain.po.User">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="name" column="name" jdbcType="CHAR"/>
+            <result property="salt" column="salt" jdbcType="CHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,salt,
+        password,email
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where  id = #{id,jdbcType=CHAR} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user
+        where  id = #{id,jdbcType=CHAR} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="top.inklov3.auth.domain.po.User" useGeneratedKeys="true">
+        insert into user
+        ( id,name,salt
+        ,password,email)
+        values (#{id,jdbcType=CHAR},#{name,jdbcType=CHAR},#{salt,jdbcType=CHAR}
+        ,#{password,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="top.inklov3.auth.domain.po.User" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="name != null">name,</if>
+                <if test="salt != null">salt,</if>
+                <if test="password != null">password,</if>
+                <if test="email != null">email,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=CHAR},</if>
+                <if test="name != null">#{name,jdbcType=CHAR},</if>
+                <if test="salt != null">#{salt,jdbcType=CHAR},</if>
+                <if test="password != null">#{password,jdbcType=VARCHAR},</if>
+                <if test="email != null">#{email,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.auth.domain.po.User">
+        update user
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=CHAR},
+                </if>
+                <if test="salt != null">
+                    salt = #{salt,jdbcType=CHAR},
+                </if>
+                <if test="password != null">
+                    password = #{password,jdbcType=VARCHAR},
+                </if>
+                <if test="email != null">
+                    email = #{email,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=CHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.auth.domain.po.User">
+        update user
+        set 
+            name =  #{name,jdbcType=CHAR},
+            salt =  #{salt,jdbcType=CHAR},
+            password =  #{password,jdbcType=VARCHAR},
+            email =  #{email,jdbcType=VARCHAR}
+        where   id = #{id,jdbcType=CHAR} 
+    </update>
+</mapper>

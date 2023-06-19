@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.PaperInfoMapper">
+
+    <select id="selectByPrimaryKey" resultType="top.inklov3.service.exam.domain.po.PaperInfo">
+        SELECT *
+        FROM paper_info
+        WHERE pid = #{pid}
+    </select>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.DepartmentMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Department">
+            <id property="did" column="did" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        did,name
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from department
+        where  did = #{did,jdbcType=VARCHAR} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from department
+        where  did = #{did,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="did" keyProperty="did" parameterType="top.inklov3.service.exam.domain.po.Department" useGeneratedKeys="true">
+        insert into department
+        ( did,name)
+        values (#{did,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="did" keyProperty="did" parameterType="top.inklov3.service.exam.domain.po.Department" useGeneratedKeys="true">
+        insert into department
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="did != null">did,</if>
+                <if test="name != null">name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="did != null">#{did,jdbcType=VARCHAR},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Department">
+        update department
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   did = #{did,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Department">
+        update department
+        set 
+            name =  #{name,jdbcType=VARCHAR}
+        where   did = #{did,jdbcType=VARCHAR} 
+    </update>
+</mapper>

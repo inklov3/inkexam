@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.TeacherMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Teacher">
+            <id property="tid" column="tid" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="departmentId" column="department_id" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="CHAR"/>
+            <result property="salt" column="salt" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        tid,name,department_id,
+        password,salt
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from teacher
+        where  tid = #{tid,jdbcType=VARCHAR} 
+    </select>
+    <select id="getTeachCourses" resultType="java.lang.String">
+
+    </select>
+    <select id="getTeacherName" resultType="java.lang.String">
+        SELECT name
+        FROM teacher
+        WHERE tid = #{tid};
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from teacher
+        where  tid = #{tid,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="tid" keyProperty="tid" parameterType="top.inklov3.service.exam.domain.po.Teacher" useGeneratedKeys="true">
+        insert into teacher
+        ( tid,name,department_id
+        ,password,salt)
+        values (#{tid,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{departmentId,jdbcType=VARCHAR}
+        ,#{password,jdbcType=CHAR},#{salt,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="tid" keyProperty="tid" parameterType="top.inklov3.service.exam.domain.po.Teacher" useGeneratedKeys="true">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="tid != null">tid,</if>
+                <if test="name != null">name,</if>
+                <if test="departmentId != null">department_id,</if>
+                <if test="password != null">password,</if>
+                <if test="salt != null">salt,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="tid != null">#{tid,jdbcType=VARCHAR},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="departmentId != null">#{departmentId,jdbcType=VARCHAR},</if>
+                <if test="password != null">#{password,jdbcType=CHAR},</if>
+                <if test="salt != null">#{salt,jdbcType=CHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Teacher">
+        update teacher
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="departmentId != null">
+                    department_id = #{departmentId,jdbcType=VARCHAR},
+                </if>
+                <if test="password != null">
+                    password = #{password,jdbcType=CHAR},
+                </if>
+                <if test="salt != null">
+                    salt = #{salt,jdbcType=CHAR},
+                </if>
+        </set>
+        where   tid = #{tid,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Teacher">
+        update teacher
+        set 
+            name =  #{name,jdbcType=VARCHAR},
+            department_id =  #{departmentId,jdbcType=VARCHAR},
+            password =  #{password,jdbcType=CHAR},
+            salt =  #{salt,jdbcType=CHAR}
+        where   tid = #{tid,jdbcType=VARCHAR} 
+    </update>
+</mapper>

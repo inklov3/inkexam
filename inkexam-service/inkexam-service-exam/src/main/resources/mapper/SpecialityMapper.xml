@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.SpecialityMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Speciality">
+            <id property="sid" column="sid" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="department" column="department" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sid,name,department
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from speciality
+        where  sid = #{sid,jdbcType=VARCHAR} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from speciality
+        where  sid = #{sid,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="sid" keyProperty="sid" parameterType="top.inklov3.service.exam.domain.po.Speciality" useGeneratedKeys="true">
+        insert into speciality
+        ( sid,name,department
+        )
+        values (#{sid,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{department,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="sid" keyProperty="sid" parameterType="top.inklov3.service.exam.domain.po.Speciality" useGeneratedKeys="true">
+        insert into speciality
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="sid != null">sid,</if>
+                <if test="name != null">name,</if>
+                <if test="department != null">department,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="sid != null">#{sid,jdbcType=VARCHAR},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="department != null">#{department,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Speciality">
+        update speciality
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="department != null">
+                    department = #{department,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   sid = #{sid,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Speciality">
+        update speciality
+        set 
+            name =  #{name,jdbcType=VARCHAR},
+            department =  #{department,jdbcType=VARCHAR}
+        where   sid = #{sid,jdbcType=VARCHAR} 
+    </update>
+</mapper>

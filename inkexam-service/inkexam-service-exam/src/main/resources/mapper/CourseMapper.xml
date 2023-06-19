@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.CourseMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Course">
+            <id property="cid" column="cid" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cid,name
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from course
+        where  cid = #{cid,jdbcType=VARCHAR} 
+    </select>
+    <select id="selectCidByName" resultType="java.lang.String">
+        SELECT cid
+        FROM course
+        WHERE name = #{course_name}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from course
+        where  cid = #{cid,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="cid" keyProperty="cid" parameterType="top.inklov3.service.exam.domain.po.Course" useGeneratedKeys="true">
+        insert into course
+        ( cid,name)
+        values (#{cid,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="cid" keyProperty="cid" parameterType="top.inklov3.service.exam.domain.po.Course" useGeneratedKeys="true">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="cid != null">cid,</if>
+                <if test="name != null">name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="cid != null">#{cid,jdbcType=VARCHAR},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Course">
+        update course
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   cid = #{cid,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Course">
+        update course
+        set 
+            name =  #{name,jdbcType=VARCHAR}
+        where   cid = #{cid,jdbcType=VARCHAR} 
+    </update>
+</mapper>

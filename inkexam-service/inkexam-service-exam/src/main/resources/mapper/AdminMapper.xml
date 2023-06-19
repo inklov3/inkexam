@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.auth.mapper.AdminMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.auth.domain.po.Admin">
+            <id property="uuid" column="uuid" jdbcType="CHAR"/>
+            <result property="adminId" column="admin_id" jdbcType="CHAR"/>
+            <result property="name" column="name" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,admin_id,name
+    </sql>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.ClazzMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Clazz">
+            <id property="cid" column="cid" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="speciality" column="speciality" jdbcType="VARCHAR"/>
+            <result property="term" column="term" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cid,name,speciality,
+        term
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from clazz
+        where  cid = #{cid,jdbcType=VARCHAR} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from clazz
+        where  cid = #{cid,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="cid" keyProperty="cid" parameterType="top.inklov3.service.exam.domain.po.Clazz" useGeneratedKeys="true">
+        insert into clazz
+        ( cid,name,speciality
+        ,term)
+        values (#{cid,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{speciality,jdbcType=VARCHAR}
+        ,#{term,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="cid" keyProperty="cid" parameterType="top.inklov3.service.exam.domain.po.Clazz" useGeneratedKeys="true">
+        insert into clazz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="cid != null">cid,</if>
+                <if test="name != null">name,</if>
+                <if test="speciality != null">speciality,</if>
+                <if test="term != null">term,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="cid != null">#{cid,jdbcType=VARCHAR},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="speciality != null">#{speciality,jdbcType=VARCHAR},</if>
+                <if test="term != null">#{term,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Clazz">
+        update clazz
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="speciality != null">
+                    speciality = #{speciality,jdbcType=VARCHAR},
+                </if>
+                <if test="term != null">
+                    term = #{term,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   cid = #{cid,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Clazz">
+        update clazz
+        set 
+            name =  #{name,jdbcType=VARCHAR},
+            speciality =  #{speciality,jdbcType=VARCHAR},
+            term =  #{term,jdbcType=VARCHAR}
+        where   cid = #{cid,jdbcType=VARCHAR} 
+    </update>
+</mapper>

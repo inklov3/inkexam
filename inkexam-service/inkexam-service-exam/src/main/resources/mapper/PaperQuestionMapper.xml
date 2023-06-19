@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.PaperQuestionMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.PaperQuestion">
+        <id property="paperId" column="paper_id" jdbcType="INTEGER"/>
+        <id property="questionId" column="question_id" jdbcType="INTEGER"/>
+        <result property="questionScore" column="question_score" jdbcType="INTEGER"/>
+        <result property="questionNo" column="question_no" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="batchInsertWithPaperId">
+        INSERT INTO paper_question (paper_id, question_id, question_score, question_no)
+        VALUES
+        <foreach collection="paperQuestions" item="paperQuestion" separator=",">
+            (#{paper_id}, #{paperQuestion.questionId}, #{paperQuestion.questionScore}, #{paperQuestion.questionNo})
+        </foreach>
+    </insert>
+
+</mapper>

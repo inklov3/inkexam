@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.QuestionBankMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.QuestionBank">
+            <id property="uploadTeacherId" column="upload_teacher_id" jdbcType="VARCHAR"/>
+            <id property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="index" column="index" jdbcType="INTEGER"/>
+            <result property="relateCourse" column="relate_course" jdbcType="VARCHAR"/>
+            <result property="uploadDate" column="upload_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        upload_teacher_id,title,index,
+        relate_course,upload_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from question_bank
+        where  upload_teacher_id = #{uploadTeacherId,jdbcType=VARCHAR} AND title = #{title,jdbcType=VARCHAR} 
+    </select>
+    <select id="getLastInsertIndex" resultType="java.lang.Long">
+        SELECT LAST_INSERT_ID();
+    </select>
+    <select id="getQuestionBankList" resultType="top.inklov3.service.exam.domain.po.QuestionBank">
+        SELECT title, relate_course, upload_teacher_id, upload_date
+        FROM question_bank
+        WHERE upload_teacher_id = #{tid};
+    </select>
+    <select id="getByTidAndTitle" resultType="top.inklov3.service.exam.domain.po.QuestionBank">
+        SELECT `index`, title, relate_course, upload_teacher_id, upload_date
+        FROM question_bank
+        WHERE upload_teacher_id = #{tid}
+          AND title = #{title}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from question_bank
+        where  upload_teacher_id = #{uploadTeacherId,jdbcType=VARCHAR} AND title = #{title,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert">
+        insert into question_bank
+        ( upload_teacher_id,title,index
+        ,relate_course,upload_date)
+        values (#{uploadTeacherId,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{index,jdbcType=INTEGER}
+        ,#{relateCourse,jdbcType=VARCHAR},#{uploadDate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective">
+        insert into question_bank
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="uploadTeacherId != null">upload_teacher_id,</if>
+                <if test="title != null">title,</if>
+                <if test="index != null">index,</if>
+                <if test="relateCourse != null">relate_course,</if>
+                <if test="uploadDate != null">upload_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="uploadTeacherId != null">#{uploadTeacherId,jdbcType=VARCHAR},</if>
+                <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+                <if test="index != null">#{index,jdbcType=INTEGER},</if>
+                <if test="relateCourse != null">#{relateCourse,jdbcType=VARCHAR},</if>
+                <if test="uploadDate != null">#{uploadDate,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <insert id="insertQuestionBank">
+        INSERT INTO question_bank (title, relate_course, upload_teacher_id, upload_date)
+            VALUE (#{question_bank.title}, (SELECT cid FROM course WHERE name = #{question_bank.relateCourse}),
+                   #{question_bank.uploadTeacherId}, NOW())
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.QuestionBank">
+        update question_bank
+        <set>
+                <if test="index != null">
+                    index = #{index,jdbcType=INTEGER},
+                </if>
+                <if test="relateCourse != null">
+                    relate_course = #{relateCourse,jdbcType=VARCHAR},
+                </if>
+                <if test="uploadDate != null">
+                    upload_date = #{uploadDate,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   upload_teacher_id = #{uploadTeacherId,jdbcType=VARCHAR} AND title = #{title,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.QuestionBank">
+        update question_bank
+        set 
+            index =  #{index,jdbcType=INTEGER},
+            relate_course =  #{relateCourse,jdbcType=VARCHAR},
+            upload_date =  #{uploadDate,jdbcType=TIMESTAMP}
+        where   upload_teacher_id = #{uploadTeacherId,jdbcType=VARCHAR} AND title = #{title,jdbcType=VARCHAR} 
+    </update>
+</mapper>

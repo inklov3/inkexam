@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.inklov3.service.exam.mapper.QuestionMapper">
+
+    <resultMap id="BaseResultMap" type="top.inklov3.service.exam.domain.po.Question">
+        <id property="index" column="index" jdbcType="INTEGER"/>
+        <result property="bankId" column="bank_id" jdbcType="INTEGER"/>
+        <result property="questionType" column="question_type" jdbcType="VARCHAR"/>
+        <result property="questionDescribe" column="question_describe" jdbcType="VARCHAR"/>
+        <result property="answer" column="answer" jdbcType="VARCHAR"/>
+        <result property="questionOption" column="question_option" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        index,bank_id,question_type,
+        question_describe,answer,question_option
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from question
+        where index = #{index,jdbcType=INTEGER}
+    </select>
+    <select id="selectByBankId" resultType="top.inklov3.service.exam.domain.po.Question">
+        SELECT `index`, question_type, question_describe, question_option, answer
+        FROM question
+        WHERE bank_id = #{bank_id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from question
+        where index = #{index,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="index" keyProperty="index"
+            parameterType="top.inklov3.service.exam.domain.po.Question" useGeneratedKeys="true">
+        insert into question
+        ( index, bank_id, question_type
+        , question_describe, answer, question_option)
+        values ( #{index,jdbcType=INTEGER}, #{bankId,jdbcType=INTEGER}, #{questionType,jdbcType=VARCHAR}
+               , #{questionDescribe,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{questionOption,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="index" keyProperty="index"
+            parameterType="top.inklov3.service.exam.domain.po.Question" useGeneratedKeys="true">
+        insert into question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="index != null">index,</if>
+            <if test="bankId != null">bank_id,</if>
+            <if test="questionType != null">question_type,</if>
+            <if test="questionDescribe != null">question_describe,</if>
+            <if test="answer != null">answer,</if>
+            <if test="questionOption != null">question_option,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="index != null">#{index,jdbcType=INTEGER},</if>
+            <if test="bankId != null">#{bankId,jdbcType=INTEGER},</if>
+            <if test="questionType != null">#{questionType,jdbcType=VARCHAR},</if>
+            <if test="questionDescribe != null">#{questionDescribe,jdbcType=VARCHAR},</if>
+            <if test="answer != null">#{answer,jdbcType=VARCHAR},</if>
+            <if test="questionOption != null">#{questionOption,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <insert id="insertQuestions">
+        INSERT INTO question (bank_id, question_type, question_describe, question_option, answer)
+        VALUES
+        <foreach collection="questions" item="question" separator=",">
+            (#{bank_id}, #{question.questionType}, #{question.questionDescribe}, #{question.questionOption},
+            #{question.answer})
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="top.inklov3.service.exam.domain.po.Question">
+        update question
+        <set>
+            <if test="bankId != null">
+                bank_id = #{bankId,jdbcType=INTEGER},
+            </if>
+            <if test="questionType != null">
+                question_type = #{questionType,jdbcType=VARCHAR},
+            </if>
+            <if test="questionDescribe != null">
+                question_describe = #{questionDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="questionOption != null">
+                question_option = #{questionOption,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where index = #{index,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="top.inklov3.service.exam.domain.po.Question">
+        update question
+        set bank_id           = #{bankId,jdbcType=INTEGER},
+            question_type     = #{questionType,jdbcType=VARCHAR},
+            question_describe = #{questionDescribe,jdbcType=VARCHAR},
+            answer            = #{answer,jdbcType=VARCHAR},
+            question_option   = #{questionOption,jdbcType=VARCHAR}
+        where index = #{index,jdbcType=INTEGER}
+    </update>
+</mapper>
